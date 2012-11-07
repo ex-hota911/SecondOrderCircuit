@@ -59,5 +59,134 @@
 
 %\maketitle
 \section{二階の回路計算量}
+$n$を自然数, $L \colon \N \to \N$ とおく.
+$n$入力$L$神託回路とは
+1入力1出力ゲート $\neg$, 2入力1出力ゲート$\vee$と$\wedge$, 
+$m$入力$L(m)$出力ゲート$\phi$からなる回路である.
+より形式的には有向無閉路グラフとして以下のように定義される.
+
+\begin{definition}[神託回路]
+(サイズm, 長さ$L$神託)回路とは,
+有向無閉路グラフ$([m], E)$と頂点のラベル付けGateの組で以下を満たすもの:
+\begin{itemize}
+ \item $E \subseteq [m] \times [m]$;
+ \item $\mathrm{Gate} \colon [m] \to \{\mathrm{input}, \mathrm{output}, \top, \bot, \neg, \vee, \wedge, \phi, \mathrm{fanout}\}$
+ \item input, $\top$, $\bot$頂点は入次数が0, 出次数が1;
+ \item output頂点は入次数が1, 出次数が0;
+ \item $\neg$頂点は入次数が1, 出次数が1;
+ \item $\vee$, $\wedge$頂点は入次数が2, 出次数が1;
+ \item $\phi$頂点の入次数が$n$のとき, 出次数は$L(n)$;
+ \item fanout 頂点の入次数は1.
+\end{itemize}
+\end{definition}
+
+一般に回路を有向無閉路グラフによって定義するとき,
+ゲートの出次数を制限し, fanoutゲートを含めることはしない.
+しかしここでは$\phi$ゲートが複数の出力を持ちうることから,
+出力の何ビット目に接続しているのか明確にする必要があり,
+上記のような定義をしている.
+
+回路$C$のサイズを頂点数, 深さをinput頂点からoutput頂点へのパスの最大長と定義し,
+それぞれ$|C|$と$\mathrm{depth}(C)$と表記する.
+
+回路におけるゲートの出力の数は固定長で有るため, 神託$\phi$の出力のサイズは入力サイズによって決まらなくてはならない. そこで$\phi$を正規関数$\funReg$に制限する
+
+.
+
+\begin{definition}
+(神託)回路族$(C_{L,n})_{L,n}$が(二階の)多項式サイズであるとは,
+二階の多項式$P$が存在して, 任意の$L \in \mathbf{Mono}$, $n \in \N$について
+\[
+ |C_{L,n}| \le P(L)(n)
+\]
+を満たすこと.
+\end{definition}
+
+つづく.
+
+
+
+\section{Fix point operation for contraction mappings is $\classPtwo$-complete}
+
+関数 $f \in [0,1] \to \R$ における不動点とは以下の等式を満たす$x$である
+\[
+ f(x) = x.
+\]
+特に$f$が縮小写像であるとき, つまり$f \in [0, 1] \to [0, 1]$ かつ
+ある定数$0 \le q < 1$が存在して,
+\[
+ |f(x) - f(y)| \le q|x - y|
+\]
+が任意の $x, y \in [0, 1]$ で成り立つとき, $f$の不動点はただひとつ常に存在する.
+
+第二変数について縮小写像であるような関数$g \in \classC_{\mathrm{CM}[0,1]^2}$,
+つまりある定数$0 \le q < 1$が存在して, 任意の $x, y, z \in [0, 1]$にたいし,
+\[
+ |g(z, x) - g(z, y)| \le q|x - y|
+\]
+が成り立つ関数にたいして,
+\[
+h(x) = g(x, h(x)).
+\]
+を満たす関数$h \in \classC_{[0,1]}$を$\OpCMFix(g)$と表記する.
+そのような$h$は常に存在するため, $\OpCMFix$は$\classC_{\mathrm{CM}[0,1]^2}$から
+$\classC_{[0,1]}$への関数となる.
+
+
+\begin{theorem}
+$\OpCMFix$ は $(\deltaboxCM, \deltabox)$-$\classPtwo$-$\redNCW$完全.
+\end{theorem}
+
+$\OpCMFix \in (\deltaboxCM, \deltabox)$-$\classPtwo$ は比較的簡単.
+$g_x(y) = g(x, y)$と表記すると,
+\begin{align*}
+ |g^k_x(0) - h(x)| 
+ & = |g^k_x(0) - g_x(h(x))|
+ \\
+ & \le q |g^{k-1}_x(0) - h(x)| \le \cdots
+ \\
+ & \le q ^ k |0 - h(x)| \le q ^ k
+\end{align*}
+よって $O(n)$ 回 $g_x$ を施すことで $h(x)$ の $n$桁近似が得られるため, 
+$\OpCMFix$ は多項式時間計算可能.
+
+困難性は以下の回路値問題の二階版が多項式時間困難であることから帰着する.
+
+\begin{lemma}
+$\funReg$ から $\funPred$ への部分関数 $\OpCVP$ を
+\begin{itemize}
+ \item $\mathrm{dom} \OpCVP = \{\langle (C_n)_n, \phi\rangle \mid$
+$\phi \in \funPred$ かつ $C_n$ は長さ$|\phi|$の神託ゲートを持つ$n$入力$1$出力回路  $\}$,
+ \item $u \in \Sigma^*$ にたいして, $\OpCVP(\langle (C_n)_n, \phi \rangle)(u) = C_{|u|}(\phi)(u)$
+\end{itemize}
+ と定義する. $\OpCVP$ は $\classPtwo$-$\redLW$完全.
+\end{lemma}
+
+
+つづく.
+
+
+\section{Fourier series expansion for smooth functions is in $\classFNCtwo$}
+
+$f \in \classC_{[-1, 1]}$ にたいし, 
+\begin{align*}
+ c_n &= \frac{1}{2} \int^1_{-1} f(t) e^{-int}dt, 
+ &
+ (n = 0, \pm 1, \pm 2, \dots)
+\end{align*}
+を$f$のフーリエ係数$(c_n)_n$といい,
+\[
+ \sum^{\inf}_{-\inf} c_n e^{int} = \lim_{m \to +\inf} \sum^m_{-m} c_n e^{int}
+\]
+をフーリエ級数という. フーリエ級数が元の$f$に収束するとき, $f$はフーリエ展開できるという.
+
+2回微分可能な$f \in \classC^2{[-1, 1]}$はフーリエ展開可能であり,
+$\OpF(f) = (c_n)_n$ とおく.
+$\rho^{\omega}$ を無限長の実数列の表現とする.
+\begin{theorem}
+ $\OpF \in (\classC^2_{[-1,1]}, \rho^{\omega})$-$\classFNCtwo$
+\end{theorem}
+
+つづく.
 
 \end{document}
