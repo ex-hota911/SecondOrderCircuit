@@ -1,0 +1,10 @@
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.log
+*.bak
+fulltext.txt
+la.sh
+doc
+*.euc.tex
